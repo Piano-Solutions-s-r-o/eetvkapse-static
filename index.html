@@ -282,10 +282,10 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
   <div class="wrap">
     <p class="lead">EET je zpátky od <b>1. 1. 2027</b>. Stát chce vidět každou korunu z ruky do ruky. Ty chceš mít čas na hosty. Pojďme to vyřešit.</p>
 
-    <form class="hero-form" id="start" data-venue>
+    <form class="hero-form" id="start" action="https://staging.admin.hugopos.eu/eet-check" method="get">
       <label for="venue1">Jak se jmenuje tvůj podnik?</label>
       <div class="big-field">
-        <input id="venue1" name="podnik" placeholder="např. Kavárna U Kohouta" autocomplete="organization" required>
+        <input id="venue1" name="podnik" type="text" minlength="2" maxlength="200" placeholder="např. Kavárna U Kohouta" autocomplete="organization" required>
         <button class="btn y" type="submit">Zjisti, jestli se tě EET týká <span aria-hidden="true">→</span></button>
       </div>
       <p class="hero-meta mono"><span>Adresu, IČO a DIČ dohledáme sami</span><span>Odpověď hned, na hugopos.eu</span><span>Do EET 2.0 zbývá <b><span id="days">71</span> dní</b></span></p>
@@ -400,10 +400,10 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
     </div>
   </div>
   <div class="wrap">
-  <form class="hero-form" data-venue style="margin-top:56px">
+  <form class="hero-form" action="https://staging.admin.hugopos.eu/eet-check" method="get" style="margin-top:56px">
       <label for="venue3">Jak se jmenuje tvůj podnik?</label>
       <div class="big-field">
-        <input id="venue3" name="podnik" placeholder="např. Bistro Na Rohu" autocomplete="organization" required>
+        <input id="venue3" name="podnik" type="text" minlength="2" maxlength="200" placeholder="např. Bistro Na Rohu" autocomplete="organization" required>
         <button class="btn" type="submit">Zjisti, jestli se tě EET týká <span aria-hidden="true">→</span></button>
       </div>
       <p class="hero-meta mono" style="color:var(--black)"><span>Adresu, IČO a DIČ dohledáme sami</span><span>Odpověď hned, na hugopos.eu</span></p>
@@ -495,7 +495,7 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
 <section class="sec y-bg final">
   <div class="wrap">
     <h2 class="reveal">Papíry počkají.<br>Hosté ne.</h2>
-    <form class="venue" data-venue>
+    <form class="venue" action="https://staging.admin.hugopos.eu/eet-check" method="get">
       <div>
         <h2>Jak se jmenuje tvůj podnik?</h2>
         <p>Pokračuj na hugopos.eu. Za pár minut máš pokladnu, co EET hlásí sama, a ty jdeš za hosty.</p>
@@ -503,7 +503,7 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
       <div>
         <div class="field">
           <label for="venue2" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Název podniku</label>
-          <input id="venue2" name="podnik" placeholder="např. Bistro Na Rohu" autocomplete="organization" required>
+          <input id="venue2" name="podnik" type="text" minlength="2" maxlength="200" placeholder="např. Bistro Na Rohu" autocomplete="organization" required>
           <button class="btn y" type="submit">Zjisti, jestli se tě EET týká <span aria-hidden="true">→</span></button>
         </div>
         <p class="note">Bez výpovědní lhůty · 14 dní zdarma</p>
@@ -542,26 +542,11 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
 
 <script>
 (function () {
-  // Kam posílat po zadání podniku. Uprav na skutečnou registrační URL.
-  var SIGNUP_URL = 'https://hugopos.eu/';
-
   // Odpočet do startu
   var start = new Date(2027, 0, 1);
   var days = Math.max(0, Math.ceil((start - new Date()) / 86400000));
   document.getElementById('days').textContent = days;
 
-  // Formuláře s podnikem → hugopos.eu
-  document.querySelectorAll('[data-venue]').forEach(function (f) {
-    f.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var v = f.querySelector('input').value.trim();
-      if (!v) return;
-      var u = new URL(SIGNUP_URL);
-      u.searchParams.set('podnik', v);
-      u.searchParams.set('utm_source', 'eetvkapse');
-      window.location.href = u.toString();
-    });
-  });
 
   // Scroll počítadlo
   var sec = document.querySelector('[data-opruz]');
