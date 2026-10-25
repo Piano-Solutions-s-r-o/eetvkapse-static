@@ -548,6 +548,37 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
   document.getElementById('days').textContent = days;
 
 
+  // GA4 (property "Hugo app", stejná jako Admin). Posílá se jen z ostrých domén.
+  // Text z pole „podnik“ se do GA4 NEPOSÍLÁ (volný text, u OSVČ jméno člověka, HUGO-2166).
+  function initGa(host, load) {
+    var ID = 'G-50WBZKGP3T';
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', ID, {
+      linker: { domains: ['hugopos.eu', 'admin.hugopos.eu'], decorate_forms: true }
+    });
+    if (load) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+      document.head.appendChild(s);
+    }
+  }
+  var liveHost = /(^|\.)eetvkapse\.cz$/.test(location.hostname);
+  initGa(location.hostname, liveHost);
+  var places = ['hero', 'middle', 'final'];
+  document.querySelectorAll('form[action*="eet-check"]').forEach(function (f, i) {
+    f.addEventListener('submit', function () {
+      var v = (f.querySelector('input').value || '').trim();
+      window.gtag('event', 'eet_check_submit', {
+        form_position: places[i] || String(i),
+        query_length: v.length,
+        transport_type: 'beacon'
+      });
+    });
+  });
+
   // Scroll počítadlo
   var sec = document.querySelector('[data-opruz]');
   var clock = document.getElementById('clock');
