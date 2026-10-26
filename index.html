@@ -2,6 +2,13 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
+<!-- Google Tag Manager (stejný kontejner jako hugopos.eu); jen na ostrých doménách, ne na localhostu -->
+<script>if(/(^|\.)eetvkapse\.cz$/.test(location.hostname)){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NC3PW2KC');}</script>
+<!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EET v kapse · průvodce EET 2.0 od Huga</title>
 <meta name="description" content="EET se 1. 1. 2027 vrací. Lidský průvodce po EET 2.0 pro kavárny, bistra a restaurace: koho se týká, termíny, certifikát z MOJE daně a jak to celé přežít.">
@@ -242,6 +249,10 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NC3PW2KC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <a class="skip" href="#co">Přeskočit na obsah</a>
 
 <header class="bar">
@@ -548,33 +559,16 @@ footer .legal{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255
   document.getElementById('days').textContent = days;
 
 
-  // GA4 (property "Hugo app", stejná jako Admin). Posílá se jen z ostrých domén.
-  // Text z pole „podnik“ se do GA4 NEPOSÍLÁ (volný text, u OSVČ jméno člověka, HUGO-2166).
-  function initGa(host, load) {
-    var ID = 'G-50WBZKGP3T';
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag() { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', ID, {
-      linker: { domains: ['hugopos.eu', 'admin.hugopos.eu'], decorate_forms: true }
-    });
-    if (load) {
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
-      document.head.appendChild(s);
-    }
-  }
-  var liveHost = /(^|\.)eetvkapse\.cz$/.test(location.hostname);
-  initGa(location.hostname, liveHost);
   var places = ['hero', 'middle', 'final'];
   document.querySelectorAll('form[action*="eet-check"]').forEach(function (f, i) {
     f.addEventListener('submit', function () {
       var v = (f.querySelector('input').value || '').trim();
-      window.gtag('event', 'eet_check_submit', {
+      // Do GTM jde jen pozice formuláře a délka textu, nikdy text z pole (HUGO-2166).
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'eet_check_submit',
         form_position: places[i] || String(i),
-        query_length: v.length,
-        transport_type: 'beacon'
+        query_length: v.length
       });
     });
   });
